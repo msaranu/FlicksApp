@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_movie_detail"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.codepath.flicksapp.activities.MovieDetailActivity">
+
+    <com.google.android.youtube.player.YouTubePlayerView
+        android:layout_width="200dp"
+        android:layout_height="180dp"
+        android:id="@+id/ytYouTube"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:textSize="30sp"
+        android:id="@+id/tvMovieTitle"
+        android:layout_below="@id/ytYouTube"
+        android:layout_alignLeft="@+id/ytYouTube"
+        android:layout_alignStart="@+id/ytYouTube"
+        android:layout_alignRight="@id/ytYouTube"
+        android:layout_alignEnd="@id/ytYouTube"/>
+
+    <TextView
+        android:text="Release Date:  "
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/tvReleaseDate"
+        android:layout_alignLeft="@+id/ytYouTube"
+        android:layout_alignStart="@+id/ytYouTube"
+        android:layout_below="@id/tvMovieTitle"
+        android:id="@+id/tvReleaseDateLabel" />
+    />
+
+    <TextView
+        android:text="Release Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvReleaseDate"
+        android:layout_below="@+id/tvMovieTitle"
+        android:layout_toRightOf="@id/tvReleaseDateLabel"
+        android:layout_alignRight="@id/ytYouTube"
+        android:layout_alignEnd="@id/ytYouTube"
+
+        />
+
+    <RatingBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:id="@+id/rbRating"
+        android:layout_below="@+id/tvReleaseDate"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:theme="@style/RatingBar"
+        />
+
+</RelativeLayout>
