@@ -25,16 +25,41 @@
         android:layout_marginLeft="13dp"
         android:layout_marginStart="13dp"
         android:id="@+id/tvTitle"
-        android:textSize="24sp"
+        android:fontFamily="cursive"
+        android:textSize="@dimen/text_size_big"
         />
+
+    <TextView
+        android:text="3.2"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/tvRatingMain"
+        android:layout_below="@+id/tvTitle"
+        android:layout_toRightOf="@+id/ivStar" />
+
+    <ImageView
+        app:srcCompat="@android:drawable/star_on"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/ivStar"
+        android:layout_below="@+id/tvTitle"
+        android:layout_toRightOf="@+id/ivMovieIcon"
+        android:layout_toEndOf="@+id/ivMovieIcon"
+        android:layout_alignLeft="@id/tvTitle"
+        />
+
 
     <TextView
         android:text="TextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTitle"
-        android:layout_alignLeft="@+id/tvTitle"
-        android:layout_alignStart="@+id/tvTitle"
+        android:layout_below="@+id/ivStar"
         android:id="@+id/tvOverview"
+        android:layout_alignLeft="@+id/ivStar"
+        android:layout_alignStart="@+id/ivStar"
+        android:layout_toRightOf="@+id/ivMovieIcon"
+        android:layout_toEndOf="@+id/ivMovieIcon"
         />
+
+
 </RelativeLayout>

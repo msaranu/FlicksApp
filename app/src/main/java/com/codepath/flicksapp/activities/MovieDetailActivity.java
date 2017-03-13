@@ -34,7 +34,7 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
     @BindView(R.id.tvMovieTitle) TextView tvTitle;
     @BindView(R.id.rbRating) RatingBar rbRating;
     @BindView(R.id.tvReleaseDate)TextView tvReleaseDate;
-    @BindView(R.id.tvOverview)TextView tvOverview;
+    TextView tvOverview;
     @BindView(R.id.ytYouTube)YouTubePlayerView youTubePlayerView;
     String movieKey;
     public static final String YT_API_KEY = "AIzaSyBzJxYSEc5CX83OJmTZb02f1QxfTLKtgpw";
@@ -52,6 +52,7 @@ public class MovieDetailActivity extends YouTubeBaseActivity {
         tvReleaseDate.setText(movie.getReleaseDate());
         //Hide overview due to real estate limitation on Landscape.
         if (screenOrientationHigh == Configuration.ORIENTATION_PORTRAIT) {
+            tvOverview = (TextView) findViewById(R.id.tvOverview);
             tvOverview.setText(movie.getOverview());
         }
         rbRating.setRating(movie.getPopularRating() / 2);

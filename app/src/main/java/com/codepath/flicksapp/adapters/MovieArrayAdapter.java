@@ -10,9 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.codepath.flicksapp.R;
 import com.codepath.flicksapp.activities.MovieDetailActivity;
 import com.codepath.flicksapp.activities.MoviePlayActivity;
-import com.codepath.flicksapp.R;
 import com.codepath.flicksapp.models.Movie;
 import com.squareup.picasso.Picasso;
 
@@ -29,22 +29,29 @@ import static com.codepath.flicksapp.R.id.ivMovieIcon;
 
 public class MovieArrayAdapter extends ArrayAdapter<Movie> {
 
+    public static int POPULAR_RATING = 5;
+    public static int POPULAR_RATING_YES = 1;
+    public static int POPULAR_RATING_NO = 0;
+    public static int NUMBER_VIEWS = 2;
+    public static String NON_EXISTENT_URL ="www.imageurlthatdoesnotexist.com/blah";
+
+
     public MovieArrayAdapter(Context context, List<Movie> movies) {
         super(context, android.R.layout.simple_list_item_1, movies);
     }
 
     @Override
     public int getItemViewType(int position) {
-        if(getItem(position).popularRating >= 5){
-            return 1;
+        if(getItem(position).popularRating >= POPULAR_RATING){
+            return POPULAR_RATING_YES;
         } else {
-            return 0;
+            return POPULAR_RATING_NO;
         }
     }
 
     @Override
     public int getViewTypeCount() {
-        return 2;
+        return NUMBER_VIEWS;
     }
 
 
@@ -52,6 +59,7 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
         ImageView ivMovieIcon;
         TextView tvTitle;
         TextView tvOverview;
+        TextView tvRatingMain;
     }
 
     private static class ViewHolderHighRating { //Show only backdrop on potrait and title/overview with Landscape
@@ -65,14 +73,20 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
         int viewType = this.getItemViewType(position);
         Movie movie = getItem(position);
 
+
         switch (viewType) {
             case 0: // Low Rating
                 ViewHolderLowRating viewHolderLowRating = new ViewHolderLowRating();
+                int screenOrientationLow = getContext().getResources().getConfiguration().orientation;
+
                 if (convertView == null) {
                     convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_movie, parent, false);
                     viewHolderLowRating.ivMovieIcon = (ImageView) convertView.findViewById(ivMovieIcon);
                     viewHolderLowRating.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
                     viewHolderLowRating.tvOverview = (TextView) convertView.findViewById(R.id.tvOverview);
+                    if (screenOrientationLow == Configuration.ORIENTATION_PORTRAIT) {
+                        viewHolderLowRating.tvRatingMain = (TextView) convertView.findViewById(R.id.tvRatingMain);
+                    }
                     convertView.setTag(viewHolderLowRating);
                 } else {
                     viewHolderLowRating = (ViewHolderLowRating) convertView.getTag();
@@ -81,22 +95,25 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
                 viewHolderLowRating.ivMovieIcon.setImageResource(0);
                 viewHolderLowRating.tvTitle.setText(movie.getOriginalTitle());
                 viewHolderLowRating.tvOverview.setText(movie.getOverview());
-
-
-                if (position == 1) {
-                        movie.setPosterPath("www.imageurlthatdoesnotexist.com/blah");
-                        movie.setBackdropPath("www.imageurlthatdoesnotexist.com/blah");;
+                if (screenOrientationLow == Configuration.ORIENTATION_PORTRAIT) {
+                    viewHolderLowRating.tvRatingMain.setText(Float.toString(movie.getPopularRating()));
                 }
-                int screenOrientation = getContext().getResources().getConfiguration().orientation;
 
-                if (screenOrientation == Configuration.ORIENTATION_PORTRAIT) {
+                if (position == 6) { //Show error image for the view in position 6
+                    movie.setPosterPath(NON_EXISTENT_URL);
+                    movie.setBackdropPath(NON_EXISTENT_URL);;
+                }
+
+                //check for screen orientation and display the views accordingly.
+
+                if (screenOrientationLow == Configuration.ORIENTATION_PORTRAIT) {
                     Picasso.with(getContext())
                             .load(movie.getPosterPath()).transform(new RoundedCornersTransformation(10, 10))
                             .placeholder(R.drawable.placeholder)
                             .error(R.drawable.error)
                             .into(viewHolderLowRating.ivMovieIcon);
 
-                } else if (screenOrientation == Configuration.ORIENTATION_LANDSCAPE) {
+                } else if (screenOrientationLow == Configuration.ORIENTATION_LANDSCAPE) {
 
                     Picasso.with(getContext())
                             .load(movie.getBackdropPath()).transform(new RoundedCornersTransformation(10, 10))
@@ -123,13 +140,14 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
             case 1: //         High Rating
 
                 int screenOrientationHigh = getContext().getResources().getConfiguration().orientation;
-
                 ViewHolderHighRating viewHolderHighRating = new ViewHolderHighRating();
+
                 if (convertView == null) {
                     convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_movie_high_rating, parent, false);
                     viewHolderHighRating.ivMovieIcon = (ImageView) convertView.findViewById(ivMovieIcon);
+                    viewHolderHighRating.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
+
                     if (screenOrientationHigh == Configuration.ORIENTATION_LANDSCAPE) {
-                        viewHolderHighRating.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
                         viewHolderHighRating.tvOverview = (TextView) convertView.findViewById(R.id.tvOverview);
                     }
                     convertView.setTag(viewHolderHighRating);
@@ -138,15 +156,16 @@ public class MovieArrayAdapter extends ArrayAdapter<Movie> {
                 }
 
                 viewHolderHighRating.ivMovieIcon.setImageResource(0);
+                viewHolderHighRating.tvTitle.setText(movie.getOriginalTitle());
 
+                //check for screen orientation and display the views accordingly.
                 if (screenOrientationHigh == Configuration.ORIENTATION_LANDSCAPE) {
-                    viewHolderHighRating.tvTitle.setText(movie.getOriginalTitle());
                     viewHolderHighRating.tvOverview.setText(movie.getOverview());
                 }
 
-                if (position == 1) {
-                    movie.setPosterPath("www.imageurlthatdoesnotexist.com/blah");
-                    movie.setBackdropPath("www.imageurlthatdoesnotexist.com/blah");;
+                if (position == 6) { //Show error image for the view in position 6
+                    movie.setPosterPath(NON_EXISTENT_URL);
+                    movie.setBackdropPath(NON_EXISTENT_URL);;
                 }
 
                 if (screenOrientationHigh == Configuration.ORIENTATION_PORTRAIT) {

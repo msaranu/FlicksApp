@@ -21,7 +21,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:textSize="30sp"
+        android:textSize="@dimen/text_size_big"
         android:id="@+id/tvMovieTitle"
         android:layout_alignLeft="@+id/ytYouTube"
         android:layout_alignStart="@+id/ytYouTube"
